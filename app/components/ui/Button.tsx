@@ -12,7 +12,7 @@ export const Button = ({
   ...props
 }: Props) => (
   <button
-    className={`rounded-lg px-4 py-2 cursor-pointer ${className}`}
+    className={`rounded-lg px-4 py-2 cursor-pointer font-medium ${className}`}
     disabled={disabled}
     {...props}
   >

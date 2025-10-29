@@ -12,7 +12,7 @@ export const Select = ({
   ...props
 }: SelectProps) => (
   <select
-    className={`rounded-lg py-2 px-4  ${className}`}
+    className={`border border-gray-400 rounded-lg py-2 px-4 ${className}`}
     disabled={disabled}
     {...props}
   >
