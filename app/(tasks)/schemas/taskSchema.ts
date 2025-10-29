@@ -7,9 +7,10 @@ export const TaskSchema = zod.object({
     .trim()
     .min(3, { message: "Must be at least 3 characters" }),
   description: zod.string().max(200, "Description too long").optional(),
-  // priority: zod.enum(["low", "medium", "high"]),
-  // dueDate: zod.string().optional(),
-  // completed: zod.boolean().default(false),
+  priority: zod.enum(["low", "medium", "high"]),
+  completed: zod.boolean().optional().default(false),
 });
 
-export type Task = zod.infer<typeof TaskSchema>;
+export type Task = zod.infer<typeof TaskSchema> & {
+  status?: "creating" | "done" | "failed";
+};

@@ -18,7 +18,7 @@ export async function createTask(form: unknown) {
   return newTask;
 }
 
-export function fetchTasks() {
+export async function fetchTasks(): Promise<Task[]> {
   return mockTasks;
 }
 
