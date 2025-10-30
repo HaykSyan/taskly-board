@@ -11,14 +11,22 @@ type Ctx = {
   addOptimistic: (t: Task) => void;
   replaceTask: (tempId: string, real: Task) => void;
   removeTask: (id: string) => void;
+  searchTask: (title: string) => void;
   reload: () => Promise<void>;
 };
 
 const TasksContext = createContext<Ctx | undefined>(undefined);
 
 export function TasksProvider({ children }: { children: React.ReactNode }) {
-  const { tasks, loading, addOptimistic, replaceTask, removeTask, load } =
-    useTasks();
+  const {
+    tasks,
+    loading,
+    addOptimistic,
+    replaceTask,
+    removeTask,
+    searchTask,
+    load,
+  } = useTasks();
 
   return (
     <TasksContext.Provider
@@ -28,6 +36,7 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
         addOptimistic,
         replaceTask,
         removeTask,
+        searchTask,
         reload: load,
       }}
     >

@@ -22,6 +22,20 @@ export default function useTasks() {
     setTasks((prev) => prev.map((p) => (p.id === tempId ? real : p)));
   const removeTask = (id: string) =>
     setTasks((prev) => prev.filter((p) => p.id !== id));
+  const searchTask = (title: string) => {
+    if (!title.trim()) return tasks;
+
+    try {
+      // Escape special regex chars (to prevent invalid regex)
+      const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(escaped, "i"); // i = case-insensitive
+
+      return tasks.filter((task) => regex.test(task.title));
+    } catch {
+      // fallback if user types invalid regex
+      return tasks;
+    }
+  };
 
   return {
     tasks,
@@ -31,5 +45,6 @@ export default function useTasks() {
     replaceTask,
     removeTask,
     load,
+    searchTask,
   };
 }

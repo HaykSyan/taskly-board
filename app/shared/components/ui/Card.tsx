@@ -10,7 +10,7 @@ type CardBaseProps = {
 export function Card({ children, className = "" }: CardBaseProps) {
   return (
     <div
-      className={`flex flex-col gap-2 px-4 py-1 rounded-2xl shadow overflow-hidden bg-white ${className}`}
+      className={`flex flex-col gap-2 px-4 py-2 rounded-lg shadow overflow-hidden bg-white ${className}`}
     >
       {children}
     </div>
@@ -18,13 +18,13 @@ export function Card({ children, className = "" }: CardBaseProps) {
 }
 
 export function CardHeader({ children, className = "" }: CardBaseProps) {
-  return <div className={`flex py-3 ${className}`}>{children}</div>;
+  return <div className={`flex ${className}`}>{children}</div>;
 }
 
 export function CardBody({ children, className = "" }: CardBaseProps) {
-  return <div className={`flex py-3 ${className}`}>{children}</div>;
+  return <div className={`flex ${className}`}>{children}</div>;
 }
 
 export function CardFooter({ children, className = "" }: CardBaseProps) {
-  return <div className={`flex py-3 ${className}`}>{children}</div>;
+  return <div className={`flex ${className}`}>{children}</div>;
 }

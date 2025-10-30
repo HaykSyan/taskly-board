@@ -1,11 +1,11 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { createTask } from "../actions";
-import { Task, TaskSchema } from "../schemas/taskSchema";
+import { Task, TaskFormValues, TaskSchema } from "../schemas/taskSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
-import { Button, ErrorMessage, Input } from "@/app/components/ui";
-import { Option, Select } from "@/app/components/ui/Select";
+import { Button, ErrorMessage, Input } from "@/app/shared/components/ui";
+import { Option, Select } from "@/app/shared/components/ui/Select";
 import { useTasksCtx } from "../context/TasksProvider";
 
 export default function TaskForm() {
@@ -17,7 +17,7 @@ export default function TaskForm() {
     reset,
     register,
     formState: { errors },
-  } = useForm<Task>({
+  } = useForm({
     resolver: zodResolver(TaskSchema),
     defaultValues: {
       title: "",
@@ -27,7 +27,7 @@ export default function TaskForm() {
     },
   });
 
-  const onSubmit = (data: Task) => {
+  const onSubmit: SubmitHandler<TaskFormValues> = (data) => {
     const tempId = `temp-${crypto.randomUUID()}`;
     const optimisticTask: Task = {
       ...data,
