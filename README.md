@@ -11,7 +11,7 @@ Track tasks, earn XP, unlock achievements, and level up — all with a smooth, o
 
 | Technology                  | Purpose                                    |
 | --------------------------- | ------------------------------------------ |
-| **Next.js 15 (App Router)** | Framework for React and full-stack routes  |
+| **Next.js 16 (App Router)** | Framework for React and full-stack routes  |
 | **TypeScript**              | Static typing and reliability              |
 | **TailwindCSS**             | Utility-first responsive styling           |
 | **Zustand**                 | Lightweight global state management        |
