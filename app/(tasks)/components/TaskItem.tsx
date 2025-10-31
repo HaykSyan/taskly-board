@@ -1,4 +1,5 @@
-import { Task } from "../schemas/taskSchema";
+import { useCallback, useRef } from "react";
+import { motion } from "motion/react";
 import {
   Badge,
   Card,
@@ -7,15 +8,39 @@ import {
   CardHeader,
 } from "@/app/shared/components/ui";
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
-import { motion } from "motion/react";
 import { Button, StatusLifecycle } from "@/app/shared/components/ui";
 import { useTasksCtx } from "../context/TasksProvider";
 
-export default function TaskItem({ task }: { task: Task }) {
+import { Task } from "../schemas/taskSchema";
+
+export default function TaskItem({
+  task,
+  addCompleted,
+}: {
+  task: Task;
+  addCompleted: () => void;
+}) {
   const { removeTask, replaceTask } = useTasksCtx();
-  const handleDelete = async (id: string) => {
-    await removeTask(id);
-  };
+
+  const isCompletingRef = useRef(false);
+
+  const handleComplete = useCallback(() => {
+    if (task.completed || isCompletingRef.current) return;
+
+    isCompletingRef.current = true;
+    replaceTask(task.id!, { ...task, completed: true });
+    addCompleted();
+
+    // Reset the ref after a short delay to allow for potential re-renders
+    setTimeout(() => {
+      isCompletingRef.current = false;
+    }, 200);
+  }, [task, replaceTask, addCompleted]);
+
+  const handleDelete = useCallback(async () => {
+    await removeTask(task.id!);
+  }, [task, removeTask]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -23,7 +48,6 @@ export default function TaskItem({ task }: { task: Task }) {
         opacity: 1,
         y: 0,
         scale: 1,
-        border: task.completed ? "1px solid var(--color-green-600)" : "",
       }}
       exit={{ opacity: 0, y: 20, scale: 0.9 }}
       transition={{ duration: 0.3 }}
@@ -34,7 +58,7 @@ export default function TaskItem({ task }: { task: Task }) {
           : task.status === "failed"
           ? "border border-red-600"
           : ""
-      } `}
+      } ${task.completed ? "border border-green-600" : ""}`}
     >
       <Card className="flex flex-col w-full">
         <CardHeader className="flex items-center justify-between w-full">
@@ -47,22 +71,19 @@ export default function TaskItem({ task }: { task: Task }) {
             <StatusLifecycle status={task.status} />
           </h3>
           <div className="flex items-center gap-1">
-            {task.status === "done" &&
-              (!task.completed ? (
-                <Button
-                  onClick={() =>
-                    replaceTask(task.id!, { ...task, completed: true })
-                  }
-                  className="text-green-600 hover:text-green-600/60 !p-1"
-                >
-                  <FaCheck />
-                </Button>
-              ) : (
-                <Badge priority="done" />
-              ))}
+            {!task.completed ? (
+              <Button
+                onClick={handleComplete}
+                className="text-green-600 hover:text-green-600/60 !p-1"
+              >
+                <FaCheck />
+              </Button>
+            ) : (
+              <Badge priority="done" />
+            )}
             {task.status !== "creating" && (
               <Button
-                onClick={() => handleDelete(task.id!)}
+                onClick={handleDelete}
                 className="text-red-600 hover:text-red-600/60 !p-1"
               >
                 <FaRegTrashAlt />

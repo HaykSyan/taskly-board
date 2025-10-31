@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
 
-import { fetchTasks } from "../actions";
+import { fetchTasks, updateTasks, deleteTask } from "../actions";
 import { Task } from "../schemas/taskSchema";
+import { useGamification } from "./useGamification";
 
 export default function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const { storeProgress } = useGamification();
 
   const load = async () => {
     const data = await fetchTasks();
-    setTasks(data);
+    setTasks(data.mockTasks);
+    storeProgress({
+      completedCount: data.completedTaskCount,
+      badges:
+        data.completedTaskCount >= 5 && data.completedTaskCount <= 10
+          ? ["starter"]
+          : data.completedTaskCount >= 10
+          ? ["starter", "focus-master"]
+          : [],
+    });
     setLoading(false);
   };
 
@@ -18,10 +29,14 @@ export default function useTasks() {
   }, []);
 
   const addOptimistic = (t: Task) => setTasks((prev) => [t, ...prev]);
-  const replaceTask = (tempId: string, real: Task) =>
+  const replaceTask = (tempId: string, real: Task) => {
     setTasks((prev) => prev.map((p) => (p.id === tempId ? real : p)));
-  const removeTask = (id: string) =>
+    updateTasks(tempId, real);
+  };
+  const removeTask = (id: string) => {
     setTasks((prev) => prev.filter((p) => p.id !== id));
+    deleteTask(id);
+  };
   const searchTask = (title: string) => {
     if (!title.trim()) return tasks;
 

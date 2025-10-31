@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Task, TaskSchema } from "../(tasks)/schemas/taskSchema";
 
 let mockTasks: Task[] = [];
+let completedTaskCount: number = 0;
 
 export async function createTask(form: unknown) {
   const parsed = TaskSchema.safeParse(form);
@@ -18,7 +19,16 @@ export async function createTask(form: unknown) {
   return newTask;
 }
 
-export async function fetchTasks(): Promise<Task[]> {
+export async function fetchTasks(): Promise<{
+  mockTasks: Task[];
+  completedTaskCount: number;
+}> {
+  return { mockTasks, completedTaskCount };
+}
+
+export async function updateTasks(id: string, payload: Task): Promise<Task[]> {
+  if (payload.completed) completedTaskCount++;
+  mockTasks = mockTasks.map((p) => (p.id === id ? payload : p));
   return mockTasks;
 }
 

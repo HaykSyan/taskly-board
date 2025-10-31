@@ -6,10 +6,12 @@ import TaskItem from "./TaskItem";
 import { Input } from "@/app/shared/components/ui";
 import { useTaskSearch } from "../hooks/useTaskSearch";
 import { useCallback } from "react";
+import { useGamification } from "../hooks/useGamification";
 
 export default function TaskList() {
   const { tasks, loading } = useTasksCtx();
   const { query, setQuery, filteredTasks } = useTaskSearch(tasks);
+  const { addCompleted } = useGamification();
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   }, []);
@@ -27,7 +29,7 @@ export default function TaskList() {
       />
       <AnimatePresence initial={false}>
         {filteredTasks.map((task: Task) => (
-          <TaskItem task={task} key={task.id} />
+          <TaskItem task={task} key={task.id} addCompleted={addCompleted} />
         ))}
       </AnimatePresence>
     </div>
