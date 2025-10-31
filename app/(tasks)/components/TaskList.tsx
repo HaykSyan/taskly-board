@@ -19,9 +19,12 @@ export default function TaskList() {
     load();
   }, []);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-  }, []);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+    },
+    [setQuery]
+  );
 
   if (loading) return <p>Loading...</p>;
 

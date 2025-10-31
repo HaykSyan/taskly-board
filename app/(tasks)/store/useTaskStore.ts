@@ -14,7 +14,7 @@ type TaskState = {
   removeTask: (id: string) => void;
 };
 
-export const useTaskStore = create<TaskState>((set, get) => ({
+export const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
   loading: true,
 

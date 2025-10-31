@@ -36,7 +36,7 @@ export default function TaskForm() {
       ...data,
       id: tempId,
       status: "creating",
-    } as any;
+    };
 
     // Immediately show the new task
     addOptimistic(optimisticTask);

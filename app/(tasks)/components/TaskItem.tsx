@@ -12,6 +12,7 @@ import { Button, StatusLifecycle } from "@/app/shared/components/ui";
 
 import { Task } from "../schemas/taskSchema";
 import { useTaskStore } from "../store/useTaskStore";
+import { incrementXP } from "@/app/shared/store/useGameStore";
 
 export default function TaskItem({
   task,
@@ -30,6 +31,7 @@ export default function TaskItem({
     isCompletingRef.current = true;
     replaceTask(task.id!, { ...task, completed: true });
     addCompleted();
+    incrementXP(20);
 
     // Reset the ref after a short delay to allow for potential re-renders
     setTimeout(() => {
@@ -74,17 +76,17 @@ export default function TaskItem({
             {!task.completed ? (
               <Button
                 onClick={handleComplete}
-                className="text-green-600 hover:text-green-600/60 !p-1"
+                className="text-green-600 hover:text-green-600/60 p-1!"
               >
                 <FaCheck />
               </Button>
             ) : (
-              <Badge priority="done" />
+              <Badge variant="done" text="done" />
             )}
             {task.status !== "creating" && (
               <Button
                 onClick={handleDelete}
-                className="text-red-600 hover:text-red-600/60 !p-1"
+                className="text-red-600 hover:text-red-600/60 p-1!"
               >
                 <FaRegTrashAlt />
               </Button>
@@ -96,7 +98,7 @@ export default function TaskItem({
           <p className="text-gray-400 mb-1">{task.description}</p>
         </CardBody>
         <CardFooter>
-          <Badge priority={task.priority} />
+          <Badge variant={task.priority} text={task.priority} />
         </CardFooter>
       </Card>
     </motion.div>
