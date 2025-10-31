@@ -1,17 +1,24 @@
 "use client";
-import { useTasksCtx } from "../context/TasksProvider";
-import { Task } from "../schemas/taskSchema";
+import { useCallback, useEffect } from "react";
 import { AnimatePresence } from "motion/react";
 import TaskItem from "./TaskItem";
 import { Input } from "@/app/shared/components/ui";
+
 import { useTaskSearch } from "../hooks/useTaskSearch";
-import { useCallback } from "react";
-import { useGamification } from "../hooks/useGamification";
+import { useGameStore } from "@/app/shared/store/useGameStore";
+import { useTasks, load } from "../store/useTaskStore";
+
+import { Task } from "../schemas/taskSchema";
 
 export default function TaskList() {
-  const { tasks, loading } = useTasksCtx();
+  const { tasks, loading } = useTasks();
   const { query, setQuery, filteredTasks } = useTaskSearch(tasks);
-  const { addCompleted } = useGamification();
+  const { addCompleted } = useGameStore();
+
+  useEffect(() => {
+    load();
+  }, []);
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   }, []);

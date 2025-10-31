@@ -9,9 +9,9 @@ import {
 } from "@/app/shared/components/ui";
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
 import { Button, StatusLifecycle } from "@/app/shared/components/ui";
-import { useTasksCtx } from "../context/TasksProvider";
 
 import { Task } from "../schemas/taskSchema";
+import { useTaskStore } from "../store/useTaskStore";
 
 export default function TaskItem({
   task,
@@ -20,7 +20,7 @@ export default function TaskItem({
   task: Task;
   addCompleted: () => void;
 }) {
-  const { removeTask, replaceTask } = useTasksCtx();
+  const { removeTask, replaceTask } = useTaskStore();
 
   const isCompletingRef = useRef(false);
 

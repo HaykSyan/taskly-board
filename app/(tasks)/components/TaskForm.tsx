@@ -1,16 +1,19 @@
 "use client";
+import { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Option, Select } from "@/app/shared/components/ui/Select";
+import { Button, ErrorMessage, Input } from "@/app/shared/components/ui";
+
+import { useTaskStore } from "../store/useTaskStore";
+
 import { createTask } from "../actions";
 import { Task, TaskFormValues, TaskSchema } from "../schemas/taskSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
-import { Button, ErrorMessage, Input } from "@/app/shared/components/ui";
-import { Option, Select } from "@/app/shared/components/ui/Select";
-import { useTasksCtx } from "../context/TasksProvider";
 
 export default function TaskForm() {
   const [isPending, startTransition] = useTransition();
-  const { addOptimistic, replaceTask } = useTasksCtx();
+  const { addOptimistic, replaceTask } = useTaskStore();
 
   const {
     handleSubmit,
