@@ -3,7 +3,7 @@
 A modern **Next.js + TypeScript** application that transforms task management into a **gamified experience**.  
 Track tasks, earn XP, unlock achievements, and level up — all with a smooth, optimized UI powered by **Zustand**, **Zod**, and **React Hook Form**.
 
-👉 **Live Demo:** [Taskly Board](https://taskly-board-m4k2onxq4-hayksyans-projects.vercel.app/)
+👉 **Live Demo:** [Taskly Board](https://taskly-board.vercel.app/)
 
 ---
 

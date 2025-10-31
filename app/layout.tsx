@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 py-10">
+        <div className="grid lg:grid-cols-4 grid-cols-1 py-10">
           <AchievementList />
           {children}
         </div>
