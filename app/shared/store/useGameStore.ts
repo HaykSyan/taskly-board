@@ -1,6 +1,5 @@
 "use client";
 import { create } from "zustand";
-import { triggerConfetti } from "@/app/shared/libs/confetti";
 
 type GameState = {
   xp: number;
@@ -24,7 +23,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     set({ xp: newXP, level: newLevel });
 
-    if (newXP % 100 === 0) triggerConfetti("Level up! 🎉");
+    // if (newXP % 100 === 0) triggerConfetti("Level up! 🎉");
   },
   updateProgress: (count) => {
     const badges = [];
@@ -38,14 +37,20 @@ export const useGameStore = create<GameState>((set, get) => ({
     const badges = [...get().badges];
     if (newCount === 5 && !badges.includes("starter")) {
       badges.push("starter");
-      triggerConfetti("🎉 You completed 5 tasks!");
     } else if (newCount === 10 && !badges.includes("focus-master")) {
       badges.push("focus-master");
-      triggerConfetti("🔥 Focus Master unlocked!");
     }
     set({ completedCount: newCount, badges });
   },
 }));
+
+export const useGame = () => {
+  const xp = useGameStore((state) => state.xp);
+  const level = useGameStore((state) => state.level);
+  const completedCount = useGameStore((state) => state.completedCount);
+  const badges = useGameStore((state) => state.badges);
+  return { xp, level, completedCount, badges };
+};
 
 export const updateProgress = (count: number) =>
   useGameStore.getState().updateProgress(count);
